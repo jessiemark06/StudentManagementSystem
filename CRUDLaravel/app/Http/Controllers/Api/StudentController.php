@@ -10,7 +10,9 @@ class StudentController extends Controller
 {
    public function index(){ 
 
-     return response()->json(Students::all());
+    $students = Students::all();
 
+     return response()->json($students);
+    
    }
 }
