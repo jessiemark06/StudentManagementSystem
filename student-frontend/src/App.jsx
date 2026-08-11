@@ -1,34 +1,24 @@
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+
+import StudentList from "./StudentList";
+import AddStudent from "./AddStudent";
+import EditStudent from "./EditStudent";
 
 function App() {
- 
-   
-   const [students, setStudents] = useState([]);
-
-    useEffect(() => {
-
-        fetch("http://127.0.0.1:8000/api/students")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setStudents(data);
-            });
-
-    }, []);
-
-   return (
-        <div>
+    return (
+        <div className="container">
             <h1>Student Management</h1>
 
-            <h2>Students</h2>
+            <Routes>
+                {/* Student List */}
+                <Route path="/" element={<StudentList />} />
 
-            {students.map(student => (
-                <div key={student.id}>
-                    <p>
-                        {student.first_name} {student.last_name}
-                    </p>
-                </div>
-            ))}
+                {/* Add Student */}
+                <Route path="/students/add" element={<AddStudent />} />
+
+                {/* Edit Student */}
+                <Route path="/students/edit/:id" element={<EditStudent />} />
+            </Routes>
         </div>
     );
 }
