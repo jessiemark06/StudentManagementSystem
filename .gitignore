@@ -1,0 +1,23 @@
+# Root
+/node_modules/
+
+# Laravel
+CRUDLaravel/vendor/
+CRUDLaravel/node_modules/
+CRUDLaravel/public/storage
+CRUDLaravel/storage/*.key
+CRUDLaravel/storage/framework/
+CRUDLaravel/storage/logs/
+CRUDLaravel/.env
+
+# React
+student-frontend/node_modules/
+student-frontend/dist/
+student-frontend/node_modules/.vite/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
