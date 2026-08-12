@@ -43,6 +43,7 @@ class StudentsController extends Controller
       return view('index', compact('students'));
    }
    
+   
    public function filter(Request $request){
       $student = Students::query();
 

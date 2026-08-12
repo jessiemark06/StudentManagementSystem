@@ -99,6 +99,7 @@ form {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
+     color: #222;
 }
 
 .form-group input,
@@ -107,4 +108,37 @@ form {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: #222;
+}
+.pagination button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.search-section {
+    margin-bottom: 15px;
+       display: flex;
+    justify-content: flex-end;
+}
+
+.search-section input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

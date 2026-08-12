@@ -143,7 +143,7 @@ function AddStudent() {
                                 key={course.id}
                                 value={course.id}
                             >
-                                {course.name}
+                                {course.course_name}
                             </option>
 
                         ))}
