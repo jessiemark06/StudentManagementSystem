@@ -14,17 +14,22 @@ class StudentController extends Controller
     $students = Students::with('course');
       
     if($request->filled('search')){ 
-      $search = $request->search;
+      $result = $request->search;
 
-      $students->where(function ($query) use ($search) {
+      $students->where(function ($query) use ($result) {
 
-         $query->where('first_name', 'like', '%' . $search . '%')
-               ->orWhere('last_name', 'like', '%'. $search . '%')
+         $query->where('first_name', 'like', '%' . $result . '%')
+               ->orWhere('last_name', 'like', '%'. $result . '%')
               
-               ->orWherehas('course', function ($courseQuery) use ($search){
-                   $courseQuery->where('course_name', 'like', '%' . $search . '%');
+               ->orWherehas('course', function ($courseQuery) use ($result){
+                   $courseQuery->where('course_name', 'like', '%' . $result . '%');
                 });
       });
+    }
+      
+    if($request->filled('sort')){
+      $students->orderBy($request->sort);
+
     }
 
     $students = $students->paginate(10)->withQueryString();
@@ -50,12 +55,6 @@ class StudentController extends Controller
       ], 201);
    }
 
-   public function course(){
-
-      $course = course::all();
-
-      return response()->json($course);
-   }
 
    public function display($id){
       $students = Students::findorfail($id);

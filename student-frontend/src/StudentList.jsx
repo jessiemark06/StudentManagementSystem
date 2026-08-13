@@ -6,14 +6,21 @@ function StudentList() {
     const [students, setStudents] = useState([]);
     const [pagination, setPagination] = useState({});
     const [search, setSearch] = useState("");
+    const [sort, setSort] = useState("");
 
     const API_URL = "http://127.0.0.1:8000/api/students";
 
 
     // Get students
-    const getStudents = (page = 1, searchValue = search) => {
+    const getStudents = (
+        page = 1,
+        searchValue = search,
+        sortValue = sort
+    ) => {
 
-        fetch(`${API_URL}?page=${page}&search=${searchValue}`)
+        fetch(
+            `${API_URL}?page=${page}&search=${searchValue}&sort=${sortValue}`
+        )
             .then(response => response.json())
             .then(data => {
 
@@ -29,6 +36,7 @@ function StudentList() {
     };
 
 
+    // Initial load
     useEffect(() => {
         getStudents();
     }, []);
@@ -41,8 +49,20 @@ function StudentList() {
 
         setSearch(value);
 
-        // Go back to page 1 when searching
-        getStudents(1, value);
+        // Go back to page 1
+        getStudents(1, value, sort);
+    };
+
+
+    // Sort
+    const handleSort = (e) => {
+
+        const value = e.target.value;
+
+        setSort(value);
+
+        // Go back to page 1
+        getStudents(1, search, value);
     };
 
 
@@ -66,7 +86,11 @@ function StudentList() {
                 console.log(data);
 
                 // Refresh current page
-                getStudents(pagination.current_page);
+                getStudents(
+                    pagination.current_page,
+                    search,
+                    sort
+                );
 
             })
             .catch(error => {
@@ -91,7 +115,7 @@ function StudentList() {
             </div>
 
 
-            {/* Search */}
+            {/* Search and Order By */}
 
             <div className="search-section">
 
@@ -101,6 +125,34 @@ function StudentList() {
                     value={search}
                     onChange={handleSearch}
                 />
+
+
+                <select
+                    value={sort}
+                    onChange={handleSort}
+                >
+
+                    <option value="">
+                        Order By
+                    </option>
+
+                    <option value="first_name">
+                        First Name
+                    </option>
+
+                    <option value="last_name">
+                        Last Name
+                    </option>
+
+                    <option value="year">
+                        Year
+                    </option>
+
+                    <option value="birthdate">
+                        Birthdate
+                    </option>
+
+                </select>
 
             </div>
 
@@ -193,7 +245,9 @@ function StudentList() {
                 <button
                     onClick={() =>
                         getStudents(
-                            pagination.current_page - 1
+                            pagination.current_page - 1,
+                            search,
+                            sort
                         )
                     }
                     disabled={pagination.current_page === 1}
@@ -211,7 +265,9 @@ function StudentList() {
                 <button
                     onClick={() =>
                         getStudents(
-                            pagination.current_page + 1
+                            pagination.current_page + 1,
+                            search,
+                            sort
                         )
                     }
                     disabled={
