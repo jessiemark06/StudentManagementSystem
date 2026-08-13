@@ -218,7 +218,7 @@ function EditStudent() {
 
                             >
 
-                                {course.name}
+                                {course.course_name}
 
                             </option>
 

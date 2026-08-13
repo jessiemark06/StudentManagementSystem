@@ -2,26 +2,69 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function StudentList() {
+
     const [students, setStudents] = useState([]);
+    const [pagination, setPagination] = useState({});
+    const [search, setSearch] = useState("");
+    const [sort, setSort] = useState("");
 
     const API_URL = "http://127.0.0.1:8000/api/students";
 
+
     // Get students
-    const getStudents = () => {
-        fetch(API_URL)
+    const getStudents = (
+        page = 1,
+        searchValue = search,
+        sortValue = sort
+    ) => {
+
+        fetch(
+            `${API_URL}?page=${page}&search=${searchValue}&sort=${sortValue}`
+        )
             .then(response => response.json())
             .then(data => {
+
                 console.log(data);
-                setStudents(data);
+
+                setStudents(data.data);
+                setPagination(data);
+
             })
             .catch(error => {
                 console.error("Error:", error);
             });
     };
 
+
+    // Initial load
     useEffect(() => {
         getStudents();
     }, []);
+
+
+    // Search
+    const handleSearch = (e) => {
+
+        const value = e.target.value;
+
+        setSearch(value);
+
+        // Go back to page 1
+        getStudents(1, value, sort);
+    };
+
+
+    // Sort
+    const handleSort = (e) => {
+
+        const value = e.target.value;
+
+        setSort(value);
+
+        // Go back to page 1
+        getStudents(1, search, value);
+    };
+
 
     // Delete student
     const deleteStudent = (id) => {
@@ -39,17 +82,22 @@ function StudentList() {
         })
             .then(response => response.json())
             .then(data => {
+
                 console.log(data);
 
-                // Remove deleted student from screen
-                setStudents(
-                    students.filter(student => student.id !== id)
+                // Refresh current page
+                getStudents(
+                    pagination.current_page,
+                    search,
+                    sort
                 );
+
             })
             .catch(error => {
                 console.error("Error:", error);
             });
     };
+
 
     return (
         <div>
@@ -66,9 +114,55 @@ function StudentList() {
 
             </div>
 
+
+            {/* Search and Order By */}
+
+            <div className="search-section">
+
+                <input
+                    type="text"
+                    placeholder="Search students..."
+                    value={search}
+                    onChange={handleSearch}
+                />
+
+
+                <select
+                    value={sort}
+                    onChange={handleSort}
+                >
+
+                    <option value="">
+                        Order By
+                    </option>
+
+                    <option value="first_name">
+                        First Name
+                    </option>
+
+                    <option value="last_name">
+                        Last Name
+                    </option>
+
+                    <option value="year">
+                        Year
+                    </option>
+
+                    <option value="birthdate">
+                        Birthdate
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            {/* Students Table */}
+
             <table>
 
                 <thead>
+
                     <tr>
                         <th>ID</th>
                         <th>First Name</th>
@@ -81,7 +175,9 @@ function StudentList() {
                         <th>Address</th>
                         <th>Actions</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody>
 
@@ -97,7 +193,7 @@ function StudentList() {
 
                             <td>
                                 {student.course
-                                    ? student.course.name
+                                    ? student.course.course_name
                                     : "No Course"}
                             </td>
 
@@ -121,6 +217,7 @@ function StudentList() {
                                     </button>
                                 </Link>
 
+
                                 <button
                                     className="delete-button"
                                     onClick={() =>
@@ -139,6 +236,49 @@ function StudentList() {
                 </tbody>
 
             </table>
+
+
+            {/* Pagination */}
+
+            <div className="pagination">
+
+                <button
+                    onClick={() =>
+                        getStudents(
+                            pagination.current_page - 1,
+                            search,
+                            sort
+                        )
+                    }
+                    disabled={pagination.current_page === 1}
+                >
+                    Previous
+                </button>
+
+
+                <span>
+                    Page {pagination.current_page} of{" "}
+                    {pagination.last_page}
+                </span>
+
+
+                <button
+                    onClick={() =>
+                        getStudents(
+                            pagination.current_page + 1,
+                            search,
+                            sort
+                        )
+                    }
+                    disabled={
+                        pagination.current_page ===
+                        pagination.last_page
+                    }
+                >
+                    Next
+                </button>
+
+            </div>
 
         </div>
     );

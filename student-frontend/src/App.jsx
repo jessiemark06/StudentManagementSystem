@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-
 import StudentList from "./StudentList";
 import AddStudent from "./AddStudent";
 import EditStudent from "./EditStudent";
