@@ -10,9 +10,8 @@ body {
 }
 
 .container {
-    width: 95%;
-    max-width: 1400px;
-    margin: 40px auto;
+    width: 100%;
+    max-width: 1400px; 
 }
 
 h1 {
