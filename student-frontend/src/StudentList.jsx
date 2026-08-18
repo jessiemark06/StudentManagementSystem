@@ -10,9 +10,8 @@ function StudentList() {
 
     const API_URL = "http://127.0.0.1:8000/api/students";
 
-
-    // Get students
-    const getStudents = (
+ 
+    const getStudents = ( 
         page = 1,
         searchValue = search,
         sortValue = sort

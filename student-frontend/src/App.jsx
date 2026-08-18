@@ -2,13 +2,17 @@ import { Routes, Route } from "react-router-dom";
 import StudentList from "./StudentList";
 import AddStudent from "./AddStudent";
 import EditStudent from "./EditStudent";
+import Signup from "./Signup";
+import LandingPage from "./LandingPage";
 
 function App() {
     return (
-        <div className="container">
-            <h1>Student Management</h1>
+        <div className="container"> 
 
             <Routes>
+
+                   <Route path="/" element={<LandingPage />} />
+
                 {/* Student List */}
                 <Route path="/" element={<StudentList />} />
 
@@ -17,6 +21,12 @@ function App() {
 
                 {/* Edit Student */}
                 <Route path="/students/edit/:id" element={<EditStudent />} />
+
+                <Route path="/signup" element={<Signup />}/>
+
+
+             
+ 
             </Routes>
         </div>
     );
