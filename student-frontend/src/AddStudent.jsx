@@ -22,8 +22,17 @@ function AddStudent() {
 
     // Get courses
     useEffect(() => {
+ 
+        
+       const token = localStorage.getItem("token");
 
-        fetch("http://127.0.0.1:8000/api/courses")
+        fetch("http://127.0.0.1:8000/api/courses", {
+            method: "GET",
+            headers: { 
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }, 
+        })
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -48,44 +57,43 @@ function AddStudent() {
 
 
     // Submit form
-    const handleSubmit = (event) => {
+  const handleSubmit = (event) => {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        fetch(API_URL, {
+    const token = localStorage.getItem("token");
 
-            method: "POST",
+    fetch("http://127.0.0.1:8000/api/students", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to add student");
+            }
 
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
+            return response.json();
+        })
+        .then(data => {
 
-            body: JSON.stringify(formData)
+            console.log(data);
+
+            alert("Student added successfully!");
+
+            navigate("/students");
 
         })
+        .catch(error => {
 
-            .then(response => response.json())
+            console.error("Error:", error);
 
-            .then(data => {
-
-                console.log(data);
-
-                alert("Student added successfully!");
-
-                // Go back to student list
-                navigate("/");
-
-            })
-
-            .catch(error => {
-
-                console.error("Error:", error);
-
-            });
-
-    };
-
+        });
+};
 
     return (
 
@@ -241,7 +249,7 @@ function AddStudent() {
                 </button>
 
 
-                <Link to="/">
+                <Link to="/students">
                     <button
                         type="button"
                         className="cancel-button"

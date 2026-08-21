@@ -33,27 +33,25 @@ class UserController extends Controller
       ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    public function login(Request $request){
+      $credentials = $request->validate([
+        'email'=> 'required|email',
+        'password'=> 'required'
+      ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+      $user = User::where('email', $credentials['email'])->first();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+      if(!$user || !Hash::check($credentials['password'], $user->password) ){
+        return response()->json([
+          'message'=> 'Invalid email or password.'
+        ], 401);
+      }
+      $token = $user->createToken('auth_token')->plainTextToken;
+
+      return response()->json([
+        'message'=> 'Login successful.',
+        'user'=> 'token',
+        'token'=> $token
+      ], 201);
     }
 }
