@@ -17,8 +17,16 @@ function StudentList() {
         sortValue = sort
     ) => {
 
+        const token = localStorage.getItem("token");
+        
         fetch(
-            `${API_URL}?page=${page}&search=${searchValue}&sort=${sortValue}`
+            `${API_URL}?page=${page}&search=${searchValue}&sort=${sortValue}`,
+            {
+                headers: {
+                    "Accept": "applicaiton/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            }
         )
             .then(response => response.json())
             .then(data => {
@@ -76,8 +84,14 @@ function StudentList() {
             return;
         }
 
+      const token = localStorage.getItem("token");
+
         fetch(`${API_URL}/${id}`, {
             method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
         })
             .then(response => response.json())
             .then(data => {
@@ -99,8 +113,7 @@ function StudentList() {
 
 
     return (
-        <div>
-
+        <div className="container student-list-page">
             <div className="top-section">
 
                 <h2>Students</h2>

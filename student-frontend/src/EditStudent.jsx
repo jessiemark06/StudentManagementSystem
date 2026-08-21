@@ -26,7 +26,14 @@ function EditStudent() {
     // Get courses
     useEffect(() => {
 
-        fetch("http://127.0.0.1:8000/api/courses")
+       const token = localStorage.getItem("token");
+
+        fetch("http://127.0.0.1:8000/api/courses", {
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        })
 
             .then(response => response.json())
 
@@ -48,7 +55,14 @@ function EditStudent() {
     // Get the student
     useEffect(() => {
 
-        fetch(`${API_URL}/${id}`)
+       const token = localStorage.getItem("token");
+
+            fetch(`${API_URL}/${id}`, {
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
 
             .then(response => response.json())
 
@@ -105,6 +119,7 @@ function EditStudent() {
     const handleSubmit = (event) => {
 
         event.preventDefault();
+        const token = localStorage.getItem("token");
 
         fetch(`${API_URL}/${id}`, {
 
@@ -114,8 +129,8 @@ function EditStudent() {
 
                 "Content-Type": "application/json",
 
-                "Accept": "application/json"
-
+                "Accept": "application/json",
+                 "Authorization": `Bearer ${token}`
             },
 
             body: JSON.stringify(formData)
@@ -130,7 +145,7 @@ function EditStudent() {
 
                 alert("Student updated successfully!");
 
-                navigate("/");
+                         navigate("/students");
 
             })
 
@@ -349,7 +364,7 @@ function EditStudent() {
                 </button>
 
 
-                <Link to="/">
+                <Link to="/students">
 
                     <button
 

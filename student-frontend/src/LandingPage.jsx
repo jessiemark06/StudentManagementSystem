@@ -25,10 +25,7 @@ function LandingPage() {
                         <Link to="/login" className="login-btn">
                             Login
                         </Link>
-
-                        <Link to="/signup" className="signup-btn">
-                            Sign Up
-                        </Link>
+ 
                     </div>
 
                 </div>
@@ -254,11 +251,11 @@ function LandingPage() {
                 <div className="footer-container">
 
                     <div className="footer-logo">
-                        MySystem
+                        StudentHub
                     </div>
 
                     <p>
-                        © 2026 MySystem. All rights reserved.
+                        © 2026 c. All rights reserved.
                     </p>
 
                     <div className="footer-links">
