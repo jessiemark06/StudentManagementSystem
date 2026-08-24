@@ -8,7 +8,7 @@ function EditStudent() {
     const navigate = useNavigate();
 
     const [courses, setCourses] = useState([]);
-
+    
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
