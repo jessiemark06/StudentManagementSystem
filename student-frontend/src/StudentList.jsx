@@ -7,41 +7,50 @@ function StudentList() {
     const [pagination, setPagination] = useState({});
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const API_URL = "http://127.0.0.1:8000/api/students";
 
  
-    const getStudents = ( 
-        page = 1,
-        searchValue = search,
-        sortValue = sort
-    ) => {
+   const getStudents = (
+    page = 1,
+    searchValue = search,
+    sortValue = sort
+) => {
+    setLoading(true);
 
-        const token = localStorage.getItem("token");
-        
-        fetch(
-            `${API_URL}?page=${page}&search=${searchValue}&sort=${sortValue}`,
-            {
-                headers: {
-                    "Accept": "applicaiton/json",
-                    "Authorization": `Bearer ${token}`
-                }
+    const token = localStorage.getItem("token");
+
+    fetch(
+        `${API_URL}?page=${page}&search=${encodeURIComponent(searchValue)}&sort=${encodeURIComponent(sortValue)}`,
+        {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`
             }
-        )
-            .then(response => response.json())
-            .then(data => {
+        }
+    )
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
 
-                console.log(data);
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
 
-                setStudents(data.data);
-                setPagination(data);
-
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    };
-
+            setStudents(data.data || []);
+            setPagination(data);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            setStudents([]);
+        })
+        .finally(() => {
+            setLoading(false);
+        });
+};
 
     // Initial load
     useEffect(() => {
@@ -89,7 +98,7 @@ function StudentList() {
         fetch(`${API_URL}/${id}`, {
             method: "DELETE",
             headers: {
-                "Accept": "application/json",
+              "Accept": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         })
@@ -171,83 +180,79 @@ function StudentList() {
 
             {/* Students Table */}
 
-            <table>
+          <table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Sex</th>
+            <th>Birthdate</th>
+            <th>Number</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
 
-                <thead>
+    <tbody>
+        {loading ? (
+            <tr>
+                <td colSpan="10" className="loading-message">
+                    Loading students...
+                </td>
+            </tr>
+        ) : students.length === 0 ? (
+            <tr>
+                <td colSpan="10" className="empty-message">
+                    No students found.
+                </td>
+            </tr>
+        ) : (
+            students.map(student => (
+                <tr key={student.id}>
+                    <td>{student.id}</td>
 
-                    <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Course</th>
-                        <th>Year</th>
-                        <th>Sex</th>
-                        <th>Birthdate</th>
-                        <th>Number</th>
-                        <th>Address</th>
-                        <th>Actions</th>
-                    </tr>
+                    <td>{student.first_name}</td>
 
-                </thead>
+                    <td>{student.last_name}</td>
 
+                    <td>
+                        {student.course
+                            ? student.course.course_name
+                            : "No Course"}
+                    </td>
 
-                <tbody>
+                    <td>{student.year}</td>
 
-                    {students.map(student => (
+                    <td>{student.sex}</td>
 
-                        <tr key={student.id}>
+                    <td>{student.birthdate}</td>
 
-                            <td>{student.id}</td>
+                    <td>{student.number}</td>
 
-                            <td>{student.first_name}</td>
+                    <td>{student.address}</td>
 
-                            <td>{student.last_name}</td>
+                    <td>
+                        <Link to={`/students/edit/${student.id}`}>
+                            <button className="edit-button">
+                                Edit
+                            </button>
+                        </Link>
 
-                            <td>
-                                {student.course
-                                    ? student.course.course_name
-                                    : "No Course"}
-                            </td>
-
-                            <td>{student.year}</td>
-
-                            <td>{student.sex}</td>
-
-                            <td>{student.birthdate}</td>
-
-                            <td>{student.number}</td>
-
-                            <td>{student.address}</td>
-
-                            <td>
-
-                                <Link
-                                    to={`/students/edit/${student.id}`}
-                                >
-                                    <button className="edit-button">
-                                        Edit
-                                    </button>
-                                </Link>
-
-
-                                <button
-                                    className="delete-button"
-                                    onClick={() =>
-                                        deleteStudent(student.id)
-                                    }
-                                >
-                                    Delete
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-                    ))}
-
-                </tbody>
-
-            </table>
+                        <button
+                            className="delete-button"
+                            onClick={() => deleteStudent(student.id)}
+                        >
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            ))
+        )}
+    </tbody>
+</table>
 
 
             {/* Pagination */}
