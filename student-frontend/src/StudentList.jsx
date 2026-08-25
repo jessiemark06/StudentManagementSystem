@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function StudentList() {
 
@@ -8,6 +8,7 @@ function StudentList() {
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState("");
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const API_URL = "http://127.0.0.1:8000/api/students";
 
@@ -120,9 +121,42 @@ function StudentList() {
             });
     };
 
+        const handleLogout = async () => {
+
+            const token = localStorage.getItem("token");
+
+            try {
+
+                await fetch("http://127.0.0.1:8000/api/logout", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+            } catch (error) {
+                console.error(error);
+            }
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            navigate("/");
+        };
 
     return (
-        <div className="container student-list-page">
+       <div className="container student-list-page">
+
+        <div className="logout-section">
+            <button
+                className="logout-button"
+                onClick={handleLogout}
+            >
+                Logout
+            </button>
+        </div>
+
             <div className="top-section">
 
                 <h2>Students</h2>

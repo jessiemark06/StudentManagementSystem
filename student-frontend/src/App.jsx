@@ -5,6 +5,7 @@ import EditStudent from "./EditStudent";
 import Signup from "./Signup";
 import Login from "./Login";
 import LandingPage from "./LandingPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
     return (
@@ -15,22 +16,36 @@ function App() {
 
                    <Route path="/" element={<LandingPage />} />
 
-                {/* Student List */}
-                <Route path="/students" element={<StudentList />} />
-
-                {/* Add Student */}
-                <Route path="/students/add" element={<AddStudent />} />
-
-                {/* Edit Student */}
-                <Route path="/students/edit/:id" element={<EditStudent />} />
+              
 
                 <Route path="/signup" element={<Signup />}/>
+                <Route path="/login" element={<Login />}/>
+                
                 <Route
-                path="/login"
-                element={<Login />}
-            />
+                    path="/students"
+                    element={
+                        <ProtectedRoute>
+                            <StudentList />
+                        </ProtectedRoute>
+                    }
+                />
+             <Route
+                    path="/students/add"
+                    element={
+                        <ProtectedRoute>
+                            <AddStudent />
+                        </ProtectedRoute>
+                    }
+                />
+                 <Route
+                    path="/students/edit/:id"
+                    element={
+                        <ProtectedRoute>
+                            <EditStudent />
+                        </ProtectedRoute>
+                    }
+                />
 
-             
  
             </Routes>
         </div>

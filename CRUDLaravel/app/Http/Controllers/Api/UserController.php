@@ -46,6 +46,7 @@ class UserController extends Controller
           'message'=> 'Invalid email or password.'
         ], 401);
       }
+
       $token = $user->createToken('auth_token')->plainTextToken;
 
       return response()->json([
@@ -53,5 +54,13 @@ class UserController extends Controller
         'user'=> 'token',
         'token'=> $token
       ], 201);
+    }
+
+    public function logout(Request $request){
+      $request->user()->currentAccessTOken()->delete();
+
+      return response()->json([
+        'message'=> 'Logout Successfully!'
+      ]);
     }
 }
