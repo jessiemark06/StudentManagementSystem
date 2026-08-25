@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::delete('/students/{id}', [StudentController::class, 'delete']);
 
-
+    Route::post('/logout', [UserController::class, 'logout']);
 
 });
 
