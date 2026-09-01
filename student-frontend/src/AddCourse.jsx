@@ -62,7 +62,7 @@ function AddCourse() {
     return (
         <div className="container">
 
-            <h2>Add Course sample</h2>
+            <h2>Add Course</h2>
 
             <form onSubmit={handleSubmit}>
 
