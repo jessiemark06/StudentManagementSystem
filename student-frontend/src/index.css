@@ -69,6 +69,11 @@ button {
 .add-button {
     background-color: #008f5a;
 }
+.add-course-button
+{
+    background-color: #123dcc;
+     margin-right: 10px;
+}
 
 .edit-button {
     background-color: #007bff;

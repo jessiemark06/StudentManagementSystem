@@ -157,18 +157,27 @@ function StudentList() {
             </button>
         </div>
 
-            <div className="top-section">
+         <div className="top-section">
 
-                <h2>Students</h2>
+    <h2>Students</h2>
 
-                <Link to="/students/add">
-                    <button className="add-button">
-                        + Add Student
-                    </button>
-                </Link>
+    <div className="top-buttons">
 
-            </div>
+        <Link to="/courses/add">
+            <button className="add-course-button">
+                + Add Course
+            </button>
+        </Link>
 
+        <Link to="/students/add">
+            <button className="add-button">
+                + Add Student
+            </button>
+        </Link>
+
+    </div>
+
+</div>
 
             {/* Search and Order By */}
 

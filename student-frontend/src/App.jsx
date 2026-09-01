@@ -6,6 +6,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import LandingPage from "./LandingPage";
 import ProtectedRoute from "./ProtectedRoute";
+import AddCourse from "./AddCourse";
 
 function App() {
     return (
@@ -29,6 +30,15 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+                 <Route
+                    path="/courses/add"
+                    element={
+                        <ProtectedRoute>
+                            <AddCourse  />
+                        </ProtectedRoute>
+                    }
+                />
+
              <Route
                     path="/students/add"
                     element={
@@ -37,6 +47,8 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+
                  <Route
                     path="/students/edit/:id"
                     element={
