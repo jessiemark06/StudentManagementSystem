@@ -33,7 +33,7 @@ function AddCourse() {
 
         fetch(API_URL, {
             method: "POST",
-            headers: {
+            headers: { 
                 "Accept": "application/json",
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
@@ -62,7 +62,7 @@ function AddCourse() {
     return (
         <div className="container">
 
-            <h2>Add Course</h2>
+            <h2>Add Course sample</h2>
 
             <form onSubmit={handleSubmit}>
 
