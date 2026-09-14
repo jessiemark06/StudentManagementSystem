@@ -15,4 +15,15 @@ class CourseController extends Controller
 
     return response()->json($course);
     }
+
+    public function addcourse(Request $request){
+
+    $course = Course::create([
+        'course_name' =>$request->course_name
+    ]);
+    return response()->json([
+        'Message' => 'Course added successfully!',
+        'course' => $course
+    ],201);
+    }
 }
