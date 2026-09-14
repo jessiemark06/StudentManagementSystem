@@ -10,7 +10,7 @@ function AddCourse() {
         course_name: ""
     });
 
-    const API_URL = "http://127.0.0.1:8000/api/courses";
+    const API_URL = "http://127.0.0.1:8000/api/addcourse";
 
 
     // Handle input changes
@@ -24,39 +24,49 @@ function AddCourse() {
     };
 
 
-    // Submit form
-    const handleSubmit = (event) => {
+   const handleSubmit = (event) => {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-        fetch(API_URL, {
-            method: "POST",
-            headers: { 
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(formData)
+    fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
+    })
+        .then(async response => {
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Something went wrong.");
+            }
+
+            return data;
         })
-            .then(response => response.json())
-            .then(data => {
+        .then(data => {
 
-                console.log(data);
+            console.log(data);
 
-                alert("Course added successfully!");
+            alert("Course added successfully!");
 
-                navigate("/students");
+            navigate("/students");
 
-            })
-            .catch(error => {
+        })
+        .catch(error => {
 
-                console.error("Error:", error);
+            console.error("Error:", error);
 
-            });
+            alert(error.message);
 
-    };
+        });
+
+};
 
 
     return (
